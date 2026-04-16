@@ -7,7 +7,6 @@ defineProps<{
   fontFamilyPreset: string
   fontFamilyCustom: string
   presetFonts: string[]
-  downloadName: string
 }>()
 
 const emit = defineEmits<{
@@ -17,7 +16,6 @@ const emit = defineEmits<{
   (e: 'update:fontSize', value: number): void
   (e: 'update:fontFamilyPreset', value: string): void
   (e: 'update:fontFamilyCustom', value: string): void
-  (e: 'update:downloadName', value: string): void
   (e: 'download'): void
 }>()
 </script>
@@ -89,16 +87,6 @@ const emit = defineEmits<{
         />
       </label>
     </div>
-
-    <label class="field">
-      <span>保存ファイル名</span>
-      <input
-        :value="downloadName"
-        type="text"
-        placeholder="ikura-hamu-board.png"
-        @input="emit('update:downloadName', ($event.target as HTMLInputElement).value)"
-      />
-    </label>
 
     <button type="button" class="download" @click="emit('download')">PNGをダウンロード</button>
     <p class="note">看板の枠線は黒固定です。</p>

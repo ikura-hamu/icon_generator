@@ -18,7 +18,6 @@ const CHARACTER_SRC = '/character3.png'
 const presetFonts = ['Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'Arial', 'sans-serif']
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
-const downloadName = ref('ikura-hamu-board.png')
 const imageReady = ref(false)
 const characterImage = new Image()
 
@@ -31,6 +30,11 @@ const form = reactive<FormState>({
   fontSize: 20,
   fontFamilyPreset: 'Noto Sans JP',
   fontFamilyCustom: '',
+})
+
+const downloadName = computed(() => {
+  const normalizedText = form.text.replace(/\s+/g, '_').slice(0, 20)
+  return normalizedText.length > 0 ? `ikura-hamu_${normalizedText}.png` : 'ikura-hamu-board.png'
 })
 
 const resolvedFontFamily = computed(() => {
@@ -113,14 +117,12 @@ watch(
       :font-family-preset="form.fontFamilyPreset"
       :font-family-custom="form.fontFamilyCustom"
       :preset-fonts="presetFonts"
-      :download-name="downloadName"
       @update:text="form.text = $event"
       @update:board-bg-color="form.boardBgColor = $event"
       @update:text-color="form.textColor = $event"
       @update:font-size="form.fontSize = $event"
       @update:font-family-preset="form.fontFamilyPreset = $event"
       @update:font-family-custom="form.fontFamilyCustom = $event"
-      @update:download-name="downloadName = $event"
       @download="downloadPng"
     />
     <PreviewCanvas @canvas-ready="handleCanvasReady" />
