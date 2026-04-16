@@ -7,6 +7,7 @@ defineProps<{
   fontFamilyPreset: string
   fontFamilyCustom: string
   presetFonts: string[]
+  bold: boolean
 }>()
 
 const emit = defineEmits<{
@@ -16,6 +17,7 @@ const emit = defineEmits<{
   (e: 'update:fontSize', value: number): void
   (e: 'update:fontFamilyPreset', value: string): void
   (e: 'update:fontFamilyCustom', value: string): void
+  (e: 'update:bold', value: boolean): void
   (e: 'download'): void
 }>()
 </script>
@@ -63,6 +65,15 @@ const emit = defineEmits<{
         max="140"
         step="1"
         @input="emit('update:fontSize', Number(($event.target as HTMLInputElement).value))"
+      />
+    </label>
+
+    <label class="row">
+      <span>太字</span>
+      <input
+        :checked="bold"
+        type="checkbox"
+        @input="emit('update:bold', ($event.target as HTMLInputElement).checked)"
       />
     </label>
 

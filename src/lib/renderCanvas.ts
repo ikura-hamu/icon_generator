@@ -58,7 +58,11 @@ function computeBoardMetrics(
   return { lines, lineHeight, width, height }
 }
 
-function computeCanvasSize(characterImage: HTMLImageElement, boardWidth: number, boardHeight: number): CanvasLayout {
+function computeCanvasSize(
+  characterImage: HTMLImageElement,
+  boardWidth: number,
+  boardHeight: number,
+): CanvasLayout {
   const charWidth = characterImage.width * CHARACTER_SCALE
   const charHeight = characterImage.height * CHARACTER_SCALE
 
@@ -111,7 +115,7 @@ function drawBoard(
   pivotX: number,
   pivotY: number,
   metrics: BoardMetrics,
-  params: { boardBgColor: string; textColor: string; resolvedFont: string },
+  params: { boardBgColor: string; textColor: string; resolvedFont: string; bold: boolean },
 ): void {
   const x = pivotX - metrics.width / 2
   const y = pivotY - metrics.height
@@ -132,6 +136,7 @@ function drawBoard(
 
   ctx.fillStyle = params.textColor
   ctx.font = params.resolvedFont
+  ctx.font = `${params.bold ? 'bold ' : ''}${ctx.font}`
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
 
@@ -154,6 +159,7 @@ export function renderCanvas(params: {
   textColor: string
   fontSize: number
   resolvedFont: string
+  bold: boolean
 }): void {
   if (!params.imageReady || !params.canvas) {
     return
@@ -180,6 +186,7 @@ export function renderCanvas(params: {
     boardBgColor: params.boardBgColor,
     textColor: params.textColor,
     resolvedFont: params.resolvedFont,
+    bold: params.bold,
   })
   ctx.drawImage(
     params.characterImage,

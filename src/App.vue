@@ -11,6 +11,7 @@ type FormState = {
   fontSize: number
   fontFamilyPreset: string
   fontFamilyCustom: string
+  bold: boolean
 }
 
 const CHARACTER_SRC = '/character3.png'
@@ -30,6 +31,7 @@ const form = reactive<FormState>({
   fontSize: 20,
   fontFamilyPreset: 'Noto Sans JP',
   fontFamilyCustom: '',
+  bold: false,
 })
 
 const downloadName = computed(() => {
@@ -62,6 +64,7 @@ function renderPreview(): void {
     textColor: form.textColor,
     fontSize: form.fontSize,
     resolvedFont: resolvedFont.value,
+    bold: form.bold,
   })
 }
 
@@ -100,6 +103,7 @@ watch(
     form.fontSize,
     form.fontFamilyPreset,
     form.fontFamilyCustom,
+    form.bold,
   ],
   () => {
     renderPreview()
@@ -117,12 +121,14 @@ watch(
       :font-family-preset="form.fontFamilyPreset"
       :font-family-custom="form.fontFamilyCustom"
       :preset-fonts="presetFonts"
+      :bold="form.bold"
       @update:text="form.text = $event"
       @update:board-bg-color="form.boardBgColor = $event"
       @update:text-color="form.textColor = $event"
       @update:font-size="form.fontSize = $event"
       @update:font-family-preset="form.fontFamilyPreset = $event"
       @update:font-family-custom="form.fontFamilyCustom = $event"
+      @update:bold="form.bold = $event"
       @download="downloadPng"
     />
     <PreviewCanvas @canvas-ready="handleCanvasReady" />
