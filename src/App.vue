@@ -26,18 +26,20 @@ type CanvasLayout = {
   boardPivotY: number
 }
 
-const CHARACTER_SRC = '/character2.png'
+const CHARACTER_SRC = '/character3.png'
 const CHARACTER_SCALE = 0.9
-const CHARACTER_POLE_TOP = { x: 483, y: 417 }
-const BOARD_PADDING_X = 28
-const BOARD_PADDING_Y = 15
+const CHARACTER_POLE_TOP = { x: 0.483, y: 0.406 }
+const BOARD_PADDING_X = 7
+const BOARD_PADDING_Y = 5
 const BOARD_BORDER_COLOR = '#000000'
-const BOARD_BORDER_WIDTH = 8
+const BOARD_BORDER_WIDTH = 4
 const CANVAS_MARGIN = 28
 const BOARD_ROTATION_DEG = 25
 const BOARD_ROTATION_RAD = (BOARD_ROTATION_DEG * Math.PI) / 180
-const BOARD_ANCHOR_OFFSET_X = 16
-const BOARD_ANCHOR_OFFSET_Y = 4
+const BOARD_ANCHOR_OFFSET_X = 4
+const BOARD_ANCHOR_OFFSET_Y = 1
+const BOARD_MIN_WIDTH = 100
+const BOARD_MIN_HEIGHT = 40
 
 const presetFonts = ['Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'Arial', 'sans-serif']
 
@@ -52,7 +54,7 @@ const form = reactive<FormState>({
 はむ`,
   boardBgColor: '#007AFF',
   textColor: '#FFFFFF',
-  fontSize: 48,
+  fontSize: 20,
   fontFamilyPreset: 'Noto Sans JP',
   fontFamilyCustom: '',
 })
@@ -85,8 +87,11 @@ function computeBoardMetrics(ctx: CanvasRenderingContext2D): BoardMetrics {
     maxTextWidth = Math.max(maxTextWidth, measured)
   }
 
-  const width = Math.max(Math.ceil(maxTextWidth + BOARD_PADDING_X * 2), 280)
-  const height = Math.max(Math.ceil(lines.length * lineHeight + BOARD_PADDING_Y * 2), 150)
+  const width = Math.max(Math.ceil(maxTextWidth + BOARD_PADDING_X * 2), BOARD_MIN_WIDTH)
+  const height = Math.max(
+    Math.ceil(lines.length * lineHeight + BOARD_PADDING_Y * 2),
+    BOARD_MIN_HEIGHT,
+  )
 
   return { lines, lineHeight, width, height }
 }
@@ -95,8 +100,8 @@ function computeCanvasSize(boardWidth: number, boardHeight: number): CanvasLayou
   const charWidth = characterImage.width * CHARACTER_SCALE
   const charHeight = characterImage.height * CHARACTER_SCALE
 
-  const poleX = CHARACTER_POLE_TOP.x * CHARACTER_SCALE
-  const poleY = CHARACTER_POLE_TOP.y * CHARACTER_SCALE
+  const poleX = characterImage.width * CHARACTER_POLE_TOP.x * CHARACTER_SCALE
+  const poleY = characterImage.height * CHARACTER_POLE_TOP.y * CHARACTER_SCALE
 
   const boardPivotX = poleX + BOARD_ANCHOR_OFFSET_X
   const boardPivotY = poleY + BOARD_ANCHOR_OFFSET_Y
@@ -422,7 +427,7 @@ canvas {
     -10px 0;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 780px) {
   .app {
     grid-template-columns: 1fr;
   }
