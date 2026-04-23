@@ -16,7 +16,15 @@ type FormState = {
 
 const CHARACTER_SRC = '/character3.png'
 
-const presetFonts = ['Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'Arial', 'sans-serif']
+const presetFonts = [
+  'Noto Sans JP',
+  'Hiragino Sans',
+  'Yu Gothic',
+  'Meiryo',
+  'Arial',
+  'sans-serif',
+  'Zen Kurenaido',
+]
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const imageReady = ref(false)
@@ -108,6 +116,23 @@ watch(
   () => {
     renderPreview()
   },
+)
+
+watch(
+  () => resolvedFont.value,
+  async (font) => {
+    if (!('fonts' in document)) {
+      return
+    }
+
+    try {
+      await document.fonts.load(font, form.text || 'あ')
+      renderPreview()
+    } catch {
+      // Keep current rendering when a web font cannot be loaded.
+    }
+  },
+  { immediate: true },
 )
 </script>
 

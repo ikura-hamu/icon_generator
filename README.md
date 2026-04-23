@@ -46,3 +46,14 @@ pnpm build
 ```sh
 pnpm lint
 ```
+
+---
+
+## Font Notes (Zen Kurenaido)
+
+- This project includes `Zen Kurenaido` as a preset font via Google Fonts CDN.
+- Source: <https://fonts.google.com/specimen/Zen+Kurenaido>
+- License: SIL Open Font License 1.1 (OFL-1.1)
+- OFL allows commercial use, embedding, and redistribution under its conditions.
+- Do not sell the font by itself. If you redistribute font files (self-host), include the license text (`OFL.txt`) and copyright notice.
+- When using Google Fonts CDN, browser requests are sent to `fonts.googleapis.com` and `fonts.gstatic.com`. Add this to your privacy policy if required by your environment.
