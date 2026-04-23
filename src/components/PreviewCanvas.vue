@@ -21,7 +21,7 @@ onMounted(() => {
 <style scoped>
 .preview {
   display: grid;
-  place-items: center;
+  place-items: start center;
   border: 1px solid #cccccc;
   border-radius: 14px;
   padding: 14px;
