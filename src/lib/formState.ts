@@ -20,16 +20,16 @@ export const presetFonts = [
 ]
 
 export const defaultFormState: FormState = {
-  text: `いくら
-・
-はむ`,
+  text: `ikura-hamu
+アイコン
+ジェネレーター`,
   boardBgColor: '#007AFF',
   textColor: '#FFFFFF',
   fontSize: 20,
   fontFamilyPreset: 'Noto Sans JP',
   fontFamilyCustom: '',
   bold: false,
-  linePadding: 0,
+  linePadding: 4,
 }
 
 export const fontSizeRange = {
