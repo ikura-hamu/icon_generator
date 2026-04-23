@@ -2,47 +2,19 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import GeneratorForm from './components/GeneratorForm.vue'
 import PreviewCanvas from './components/PreviewCanvas.vue'
+import { createInitialFormStateFromQuery, syncFormStateToQuery } from './lib/formQuerySync'
+import { defaultFormState, presetFonts, type FormState } from './lib/formState'
 import { renderCanvas } from './lib/renderCanvas'
 
-type FormState = {
-  text: string
-  boardBgColor: string
-  textColor: string
-  fontSize: number
-  fontFamilyPreset: string
-  fontFamilyCustom: string
-  bold: boolean
-  linePadding: number
-}
-
 const CHARACTER_SRC = '/character3.png'
-
-const presetFonts = [
-  'Noto Sans JP',
-  'Hiragino Sans',
-  'Yu Gothic',
-  'Meiryo',
-  'Arial',
-  'sans-serif',
-  'Zen Kurenaido',
-]
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const imageReady = ref(false)
 const characterImage = new Image()
 
-const form = reactive<FormState>({
-  text: `いくら
-・
-はむ`,
-  boardBgColor: '#007AFF',
-  textColor: '#FFFFFF',
-  fontSize: 20,
-  fontFamilyPreset: 'Noto Sans JP',
-  fontFamilyCustom: '',
-  bold: false,
-  linePadding: 0,
-})
+const initialFormState = createInitialFormStateFromQuery(window.location.search, defaultFormState)
+const form = reactive<FormState>(initialFormState)
+syncFormStateToQuery(form, defaultFormState)
 
 const downloadName = computed(() => {
   const normalizedText = form.text.replace(/\s+/g, '_').slice(0, 20)
@@ -119,6 +91,7 @@ watch(
   ],
   () => {
     renderPreview()
+    syncFormStateToQuery(form, defaultFormState)
   },
 )
 
