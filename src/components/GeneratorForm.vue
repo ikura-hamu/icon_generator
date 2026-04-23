@@ -8,6 +8,7 @@ defineProps<{
   fontFamilyCustom: string
   presetFonts: string[]
   bold: boolean
+  linePadding: number
 }>()
 
 const emit = defineEmits<{
@@ -18,6 +19,7 @@ const emit = defineEmits<{
   (e: 'update:fontFamilyPreset', value: string): void
   (e: 'update:fontFamilyCustom', value: string): void
   (e: 'update:bold', value: boolean): void
+  (e: 'update:linePadding', value: number): void
   (e: 'download'): void
 }>()
 </script>
@@ -65,6 +67,18 @@ const emit = defineEmits<{
         max="140"
         step="1"
         @input="emit('update:fontSize', Number(($event.target as HTMLInputElement).value))"
+      />
+    </label>
+
+    <label class="field">
+      <span>行間隔: {{ linePadding }}px</span>
+      <input
+        :value="linePadding"
+        type="range"
+        min="0"
+        max="20"
+        step="1"
+        @input="emit('update:linePadding', Number(($event.target as HTMLInputElement).value))"
       />
     </label>
 

@@ -12,6 +12,7 @@ type FormState = {
   fontFamilyPreset: string
   fontFamilyCustom: string
   bold: boolean
+  linePadding: number
 }
 
 const CHARACTER_SRC = '/character3.png'
@@ -40,6 +41,7 @@ const form = reactive<FormState>({
   fontFamilyPreset: 'Noto Sans JP',
   fontFamilyCustom: '',
   bold: false,
+  linePadding: 0,
 })
 
 const downloadName = computed(() => {
@@ -73,6 +75,7 @@ function renderPreview(): void {
     fontSize: form.fontSize,
     resolvedFont: resolvedFont.value,
     bold: form.bold,
+    linePadding: form.linePadding,
   })
 }
 
@@ -112,6 +115,7 @@ watch(
     form.fontFamilyPreset,
     form.fontFamilyCustom,
     form.bold,
+    form.linePadding,
   ],
   () => {
     renderPreview()
@@ -147,12 +151,14 @@ watch(
       :font-family-custom="form.fontFamilyCustom"
       :preset-fonts="presetFonts"
       :bold="form.bold"
+      :line-padding="form.linePadding"
       @update:text="form.text = $event"
       @update:board-bg-color="form.boardBgColor = $event"
       @update:text-color="form.textColor = $event"
       @update:font-size="form.fontSize = $event"
       @update:font-family-preset="form.fontFamilyPreset = $event"
       @update:font-family-custom="form.fontFamilyCustom = $event"
+      @update:line-padding="form.linePadding = $event"
       @update:bold="form.bold = $event"
       @download="downloadPng"
     />

@@ -36,12 +36,12 @@ function getLines(text: string): string[] {
 
 function computeBoardMetrics(
   ctx: CanvasRenderingContext2D,
-  params: { text: string; fontSize: number; resolvedFont: string },
+  params: { text: string; fontSize: number; resolvedFont: string; linePadding: number },
 ): BoardMetrics {
   ctx.font = params.resolvedFont
 
   const lines = getLines(params.text)
-  const lineHeight = Math.max(16, params.fontSize)
+  const lineHeight = Math.max(16, params.fontSize) + params.linePadding
 
   let maxTextWidth = 0
   for (const line of lines) {
@@ -160,6 +160,7 @@ export function renderCanvas(params: {
   fontSize: number
   resolvedFont: string
   bold: boolean
+  linePadding: number
 }): void {
   if (!params.imageReady || !params.canvas) {
     return
@@ -174,6 +175,7 @@ export function renderCanvas(params: {
     text: params.text,
     fontSize: params.fontSize,
     resolvedFont: params.resolvedFont,
+    linePadding: params.linePadding,
   })
   const layout = computeCanvasSize(params.characterImage, boardMetrics.width, boardMetrics.height)
 
