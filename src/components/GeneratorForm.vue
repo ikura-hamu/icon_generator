@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 defineProps<{
   text: string
   boardBgColor: string
@@ -21,7 +23,18 @@ const emit = defineEmits<{
   (e: 'update:bold', value: boolean): void
   (e: 'update:linePadding', value: number): void
   (e: 'download'): void
+  (e: 'copyUrl'): void
 }>()
+
+const showCopyNotification = ref(false)
+
+const share = () => {
+  emit('copyUrl')
+  showCopyNotification.value = true
+  setTimeout(() => {
+    showCopyNotification.value = false
+  }, 2000)
+}
 </script>
 
 <template>
@@ -113,7 +126,11 @@ const emit = defineEmits<{
       </label>
     </div>
 
-    <button type="button" class="download" @click="emit('download')">PNGをダウンロード</button>
+    <div class="buttons">
+      <button type="button" class="download" @click="emit('download')">PNGをダウンロード</button>
+      <button type="button" class="share" @click="share">共有</button>
+      <span v-if="showCopyNotification" class="copy-notification">コピーしました</span>
+    </div>
     <p class="note">看板の枠線は黒固定です。</p>
   </section>
 </template>
@@ -178,6 +195,11 @@ input[type='color'] {
   background: #fff;
 }
 
+.buttons {
+  display: flex;
+  gap: 12px;
+}
+
 .download {
   border: none;
   border-radius: 9px;
@@ -187,6 +209,24 @@ input[type='color'] {
   color: #fff;
   background: #1f3c88;
   cursor: pointer;
+}
+
+.share {
+  border: none;
+  border-radius: 9px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1f3c88;
+  background: #fff;
+  border: 2px solid #1f3c88;
+  cursor: pointer;
+}
+
+.copy-notification {
+  font-size: 0.84rem;
+  color: #4d4d4d;
+  align-content: center;
 }
 
 .note {

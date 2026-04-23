@@ -78,6 +78,11 @@ onMounted(() => {
   characterImage.src = CHARACTER_SRC
 })
 
+const copyUrl = (): void => {
+  const url = new URL(window.location.href)
+  navigator.clipboard.writeText(url.toString())
+}
+
 watch(
   () => [
     form.text,
@@ -134,6 +139,7 @@ watch(
       @update:line-padding="form.linePadding = $event"
       @update:bold="form.bold = $event"
       @download="downloadPng"
+      @copy-url="copyUrl"
     />
     <PreviewCanvas @canvas-ready="handleCanvasReady" />
   </main>
