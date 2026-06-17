@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ikura-hamu/icon-generator':
+        specifier: workspace:*
+        version: link:packages/icon-generator
       vue:
         specifier: ^3.5.31
         version: 3.5.32(typescript@6.0.2)
@@ -69,6 +72,12 @@ importers:
       wrangler:
         specifier: ^4.84.1
         version: 4.84.1
+
+  packages/icon-generator:
+    devDependencies:
+      typescript:
+        specifier: ~6.0.0
+        version: 6.0.2
 
 packages:
 

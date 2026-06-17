@@ -11,7 +11,10 @@ export default defineConfig({
   plugins: [vue(), vueDevTools(), cloudflare()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@ikura-hamu/icon-generator': fileURLToPath(
+        new URL('./packages/icon-generator/src/index.ts', import.meta.url),
+      ),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 })

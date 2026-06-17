@@ -1,3 +1,14 @@
+export type RenderIconCanvasParams = {
+  canvas: HTMLCanvasElement
+  text: string
+  boardBgColor: string
+  textColor: string
+  fontSize: number
+  fontName: string
+  bold: boolean
+  linePadding: number
+}
+
 type BoardMetrics = {
   lines: string[]
   lineHeight: number
@@ -27,6 +38,33 @@ const BOARD_ANCHOR_OFFSET_X = 4
 const BOARD_ANCHOR_OFFSET_Y = 1
 const BOARD_MIN_WIDTH = 100
 const BOARD_MIN_HEIGHT = 40
+
+let characterImagePromise: Promise<HTMLImageElement> | null = null
+
+function loadCharacterImage(): Promise<HTMLImageElement> {
+  if (characterImagePromise) {
+    return characterImagePromise
+  }
+
+  characterImagePromise = new Promise((resolve, reject) => {
+    if (typeof Image === 'undefined') {
+      reject(new Error('renderIconCanvas requires a browser environment with Image support.'))
+      return
+    }
+
+    const image = new Image()
+    image.onload = () => {
+      resolve(image)
+    }
+    image.onerror = () => {
+      characterImagePromise = null
+      reject(new Error('Failed to load the bundled character image.'))
+    }
+    image.src = new URL('./character.png', import.meta.url).href
+  })
+
+  return characterImagePromise
+}
 
 function getLines(text: string): string[] {
   const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
@@ -150,22 +188,8 @@ function drawBoard(
   ctx.restore()
 }
 
-export function renderCanvas(params: {
-  imageReady: boolean
-  canvas: HTMLCanvasElement | null
-  characterImage: HTMLImageElement
-  text: string
-  boardBgColor: string
-  textColor: string
-  fontSize: number
-  resolvedFont: string
-  bold: boolean
-  linePadding: number
-}): void {
-  if (!params.imageReady || !params.canvas) {
-    return
-  }
-
+export async function renderIconCanvas(params: RenderIconCanvasParams): Promise<void> {
+  const characterImage = await loadCharacterImage()
   const ctx = params.canvas.getContext('2d')
   if (!ctx) {
     return
@@ -174,10 +198,10 @@ export function renderCanvas(params: {
   const boardMetrics = computeBoardMetrics(ctx, {
     text: params.text,
     fontSize: params.fontSize,
-    resolvedFont: params.resolvedFont,
+    resolvedFont: params.fontName,
     linePadding: params.linePadding,
   })
-  const layout = computeCanvasSize(params.characterImage, boardMetrics.width, boardMetrics.height)
+  const layout = computeCanvasSize(characterImage, boardMetrics.width, boardMetrics.height)
 
   params.canvas.width = layout.width
   params.canvas.height = layout.height
@@ -187,14 +211,14 @@ export function renderCanvas(params: {
   drawBoard(ctx, layout.boardPivotX, layout.boardPivotY, boardMetrics, {
     boardBgColor: params.boardBgColor,
     textColor: params.textColor,
-    resolvedFont: params.resolvedFont,
+    resolvedFont: params.fontName,
     bold: params.bold,
   })
   ctx.drawImage(
-    params.characterImage,
+    characterImage,
     layout.charX,
     layout.charY,
-    params.characterImage.width * CHARACTER_SCALE,
-    params.characterImage.height * CHARACTER_SCALE,
+    characterImage.width * CHARACTER_SCALE,
+    characterImage.height * CHARACTER_SCALE,
   )
 }

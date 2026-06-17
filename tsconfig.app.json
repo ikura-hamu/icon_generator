@@ -8,6 +8,7 @@
 
     // Path mapping for cleaner imports.
     "paths": {
+      "@ikura-hamu/icon-generator": ["./packages/icon-generator/src/index.ts"],
       "@/*": ["./src/*"]
     },
 

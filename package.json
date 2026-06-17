@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "run-s build:lib && run-p type-check \"build-only {@}\" --",
+    "build:lib": "tsc -p packages/icon-generator/tsconfig.json && cp packages/icon-generator/src/character.png packages/icon-generator/dist/character.png",
     "preview": "pnpm run build-only && wrangler dev",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
@@ -16,6 +17,7 @@
     "deploy": "pnpm run build-only && wrangler deploy"
   },
   "dependencies": {
+    "@ikura-hamu/icon-generator": "workspace:*",
     "vue": "^3.5.31"
   },
   "devDependencies": {
