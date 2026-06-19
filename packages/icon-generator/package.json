@@ -2,7 +2,12 @@
   "name": "@ikura-hamu/icon-generator",
   "version": "0.0.0",
   "description": "Canvas renderer for ikura-hamu icon images.",
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ikura-hamu/icon_generator.git",
+    "directory": "packages/icon-generator"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -14,11 +19,15 @@
     }
   },
   "files": [
-    "dist",
+    "dist/*.d.ts",
+    "dist/*.d.ts.map",
+    "dist/*.js",
+    "dist/*.js.map",
+    "LICENSE",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && cp src/character.png dist/character.png",
+    "build": "tsc -p tsconfig.json",
     "pack:dry-run": "pnpm pack --dry-run"
   },
   "publishConfig": {

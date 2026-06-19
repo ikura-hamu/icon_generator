@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "run-s build:lib && run-p type-check \"build-only {@}\" --",
-    "build:lib": "tsc -p packages/icon-generator/tsconfig.json && cp packages/icon-generator/src/character.png packages/icon-generator/dist/character.png",
+    "build:lib": "tsc -p packages/icon-generator/tsconfig.json",
     "preview": "pnpm run build-only && wrangler dev",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",

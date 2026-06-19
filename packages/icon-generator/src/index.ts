@@ -38,6 +38,7 @@ const BOARD_ANCHOR_OFFSET_X = 4
 const BOARD_ANCHOR_OFFSET_Y = 1
 const BOARD_MIN_WIDTH = 100
 const BOARD_MIN_HEIGHT = 40
+const CHARACTER_IMAGE_URL = 'https://icons.ikura-hamu.work/character.png'
 
 let characterImagePromise: Promise<HTMLImageElement> | null = null
 
@@ -58,9 +59,10 @@ function loadCharacterImage(): Promise<HTMLImageElement> {
     }
     image.onerror = () => {
       characterImagePromise = null
-      reject(new Error('Failed to load the bundled character image.'))
+      reject(new Error('Failed to load the character image.'))
     }
-    image.src = new URL('./character.png', import.meta.url).href
+    image.crossOrigin = 'anonymous'
+    image.src = CHARACTER_IMAGE_URL
   })
 
   return characterImagePromise
