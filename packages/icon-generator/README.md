@@ -18,8 +18,8 @@ await renderIconCanvas({
   text: 'ikura-hamu',
   boardBgColor: '#007AFF',
   textColor: '#FFFFFF',
-  fontSize: 20,
-  fontName: '20px sans-serif',
+  fontSize: 60,
+  fontName: 'Noto Sans JP',
   bold: false,
   linePadding: 4,
 })

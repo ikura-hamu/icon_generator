@@ -74,11 +74,15 @@ function getLines(text: string): string[] {
   return lines.length > 0 ? lines : ['']
 }
 
+function createCanvasFont(params: { fontSize: number; fontName: string; bold: boolean }): string {
+  return `${params.bold ? 'bold ' : ''}${params.fontSize}px ${params.fontName}`
+}
+
 function computeBoardMetrics(
   ctx: CanvasRenderingContext2D,
-  params: { text: string; fontSize: number; resolvedFont: string; linePadding: number },
+  params: { text: string; fontSize: number; canvasFont: string; linePadding: number },
 ): BoardMetrics {
-  ctx.font = params.resolvedFont
+  ctx.font = params.canvasFont
 
   const lines = getLines(params.text)
   const lineHeight = Math.max(16, params.fontSize) + params.linePadding
@@ -155,7 +159,7 @@ function drawBoard(
   pivotX: number,
   pivotY: number,
   metrics: BoardMetrics,
-  params: { boardBgColor: string; textColor: string; resolvedFont: string; bold: boolean },
+  params: { boardBgColor: string; textColor: string; canvasFont: string },
 ): void {
   const x = pivotX - metrics.width / 2
   const y = pivotY - metrics.height
@@ -175,8 +179,7 @@ function drawBoard(
   ctx.stroke()
 
   ctx.fillStyle = params.textColor
-  ctx.font = params.resolvedFont
-  ctx.font = `${params.bold ? 'bold ' : ''}${ctx.font}`
+  ctx.font = params.canvasFont
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
 
@@ -197,10 +200,16 @@ export async function renderIconCanvas(params: RenderIconCanvasParams): Promise<
     return
   }
 
+  const canvasFont = createCanvasFont({
+    fontSize: params.fontSize,
+    fontName: params.fontName,
+    bold: params.bold,
+  })
+
   const boardMetrics = computeBoardMetrics(ctx, {
     text: params.text,
     fontSize: params.fontSize,
-    resolvedFont: params.fontName,
+    canvasFont,
     linePadding: params.linePadding,
   })
   const layout = computeCanvasSize(characterImage, boardMetrics.width, boardMetrics.height)
@@ -213,8 +222,7 @@ export async function renderIconCanvas(params: RenderIconCanvasParams): Promise<
   drawBoard(ctx, layout.boardPivotX, layout.boardPivotY, boardMetrics, {
     boardBgColor: params.boardBgColor,
     textColor: params.textColor,
-    resolvedFont: params.fontName,
-    bold: params.bold,
+    canvasFont,
   })
   ctx.drawImage(
     characterImage,

@@ -58,7 +58,7 @@ export function useIconGenerator() {
         boardBgColor: form.boardBgColor,
         textColor: form.textColor,
         fontSize: form.fontSize,
-        fontName: resolvedFont.value,
+        fontName: resolvedFontFamily.value,
         bold: form.bold,
         linePadding: form.linePadding,
       })
